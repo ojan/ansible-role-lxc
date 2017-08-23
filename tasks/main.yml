@@ -19,8 +19,6 @@
     profiles: "{{ lxc_profiles }}"
     wait_for_ipv4_addresses: true
     timeout: 10
-  notify:
-  - send rocketchat message
 
 - name: Set temporary ansible_host for lxd connection
   set_fact:
@@ -76,6 +74,7 @@
 
 - name: Check authorized_keys file permission
   connection: lxd
+  become: false
   file:
     path: "/home/{{ ansible_ssh_user }}/.ssh/authorized_keys"
     owner: "{{ ansible_ssh_user }}"
