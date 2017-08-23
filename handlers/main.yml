@@ -4,8 +4,8 @@
   - name: send rocketchat message
     become: false
     rocketchat:
-      token: '9ygWGRrwuiKvx2WDr/pYcSi8uZTwrymwRbNWGncGEZxEtLiERPysuXDpRCApdthgHQ'
-      domain: chat.tsugi.fr
+      token: '9ygWGRrwuiKZTwrymwRbNWGncRPysuXDpRCApdthgHQ'
+      domain: chat.example.com
       msg: 'LXC container {{ ansible_hostname }} has been created on {{ lxc_lxd_host }}'
       color: good
       protocol: 'https'
