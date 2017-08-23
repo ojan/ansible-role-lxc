@@ -37,6 +37,8 @@ Available variables are listed below, along with default values (see `defaults/m
 - `lxc_lxd_port`: The LXD port to contact. Default to `8443`
 - `lxc_client_key`: The lxc client key used to contact the LXD daemon. Default to `{{ lookup('env', 'HOME') }}/.config/lxc/client.key`
 - `lxc_client_cert`: The lxc client certificate used to contact the LXD daemon. Default to `{{ lookup('env', 'HOME') }}/.config/lxc/client.crt`
+- `lxc_user_ssh_key`: The ssh user key to be used for operations in container with Ansible. Default to `{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}`
+
 
 Dependencies
 ------------
