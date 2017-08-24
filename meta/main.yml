@@ -4,12 +4,12 @@ galaxy_info:
   license: MIT
   min_ansible_version: 2.2
   platforms:
-  - name: Ubuntu
-    versions:
-    - Xenial
-  - name: Debian
-    versions:
-    - 9.0
+    - name: Ubuntu
+      versions:
+      - xenial
+    - name: Debian
+      versions:
+      - 9.0
   galaxy_tags:
   - system
   - lxd
