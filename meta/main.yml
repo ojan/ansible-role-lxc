@@ -9,7 +9,7 @@ galaxy_info:
       - xenial
     - name: Debian
       versions:
-      - 9.0
+      - stretch
   galaxy_tags:
   - system
   - lxd
