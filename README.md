@@ -56,7 +56,7 @@ lxc-00 lxc_lxd_host=lxd-01
 lxc-01 lxc_lxd_host=lxd-02
 ```
 
-Where `lxc_lxd_host` is th eLXD host where you want yout LCX container to run.
+Where `lxc_lxd_host` is the LXD host where you want your LXC container to run.
 
 Then set as usual a playbook like this one: 
 
