@@ -48,12 +48,24 @@ None
 Example Playbook
 ----------------
 
-Set `gather_facts` to `false` to avoid the setup module to run because you can't ssh connect in a non-existent container.
+First, set an inventory file or with host/group_vars necessary variables like: 
+
+```
+[containers]
+lxc-00 lxc_lxd_host=lxd-01
+lxc-01 lxc_lxd_host=lxd-02
+```
+
+Where `lxc_lxd_host` is th eLXD host where you want yout LCX container to run.
+
+Then set as usual a playbook like this one: 
 
     - hosts: containers
       gather_facts: false
       roles:
          - { role: ojan.lxc-node }
+
+Set `gather_facts` to `false` to avoid the setup module to run because you can't ssh connect in a non-existent container.
 
 License
 -------
