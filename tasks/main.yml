@@ -2,9 +2,9 @@
 # tasks file for play/roles/lxc-node
 
 - name: Create container with LXD
-  connection: local
   become: false
-  lxd_container:
+  local_action:
+  module: lxd_container
     name: "{{ inventory_hostname }}"
     state: started
     cert_file: "{{ lxc_client_cert }}"
