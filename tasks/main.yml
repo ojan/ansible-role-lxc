@@ -4,7 +4,7 @@
 - name: Create container with LXD
   become: false
   local_action:
-  module: lxd_container
+    module: lxd_container
     name: "{{ inventory_hostname }}"
     state: started
     cert_file: "{{ lxc_client_cert }}"
