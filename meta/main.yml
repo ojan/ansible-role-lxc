@@ -1,0 +1,18 @@
+galaxy_info:
+  author: Olivier Jan
+  description: Creation of a LXC container through the LXD API
+  license: MIT
+  min_ansible_version: 2.2
+  platforms:
+    - name: Ubuntu
+      versions:
+      - xenial
+    - name: Debian
+      versions:
+      - stretch
+  galaxy_tags:
+  - system
+  - lxd
+  - server
+  - cloud
+dependencies: []

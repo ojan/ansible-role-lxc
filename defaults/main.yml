@@ -1,0 +1,14 @@
+---
+# defaults file for play/roles/lxc-node
+
+lxc_profiles: "['default']"
+lxc_container_distro: "16.04/amd64"
+lxc_image_source: "https://cloud-images.ubuntu.com/releases"
+
+lxc_lxd_host: "lxd-01"
+lxc_lxd_port: "8443"
+
+lxc_client_key: "{{ lookup('env', 'HOME') }}/.config/lxc/client.key"
+lxc_client_cert: "{{ lookup('env', 'HOME') }}/.config/lxc/client.crt"
+
+lxc_user_ssh_key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"

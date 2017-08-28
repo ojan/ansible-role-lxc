@@ -1,0 +1,101 @@
+---
+# tasks file for play/roles/lxc-node
+- name: Get LXD info
+  shell: "lxc remote list | grep pocweb-safe | awk '{print $4}'"
+  register: output
+  delegate_to: localhost
+- name: Set LXD info
+  set_fact: 
+    lxc_lxd_url: "{{ output.stdout }}"
+- name: Create container with LXD
+  become: false
+  local_action: 
+    module: lxd_container
+    name: "{{ inventory_hostname }}"
+    state: started
+    cert_file: "{{ lxc_client_cert }}"
+    key_file: "{{ lxc_client_key }}"
+    url: "{{ lxc_lxd_url }}"
+#    url: "https://{{ hostvars[lxc_lxd_host]['address'] }}:{{ lxc_lxd_port }}"
+    source:
+      type: image
+      mode: pull
+      server: "{{ lxc_image_source }}"
+      protocol: simplestreams
+      alias: "{{ lxc_container_distro }}"
+    profiles: "{{ lxc_profiles }}"
+    wait_for_ipv4_addresses: true
+    timeout: 10
+
+- name: Set temporary ansible_host for lxd connection
+  set_fact:
+    ansible_host: "{{ lxc_lxd_host }}:{{ inventory_hostname }}"
+
+- name: Check if Python2 is installed in container
+  connection: lxd
+  become: false
+  raw: dpkg -s python
+  register: python_check_is_installed
+  failed_when: python_check_is_installed.rc not in [0,1]
+  changed_when: false
+
+- name: Install Python2 in container
+  connection: lxd
+  become: false
+  raw: apt update && apt install -qy python
+  when: python_check_is_installed.rc == 1
+
+- name: Install necessary packages
+  connection: lxd
+  become: false
+  apt: name={{ item }} state=present
+  with_items:
+    - sudo
+    - ssh
+
+- name: Make sudo group without passwd prompt
+  connection: lxd
+  become: false
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%sudo\s'
+    line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+
+- name: Creates {{ ansible_ssh_user }} user
+  connection: lxd
+  become: false
+  user:
+    name: "{{ ansible_ssh_user }}"
+    comment: "Ansible SSH User"
+    shell: /bin/bash
+    password: "$6$Z16kaiv8RC/fi$gzlpJoXVGsvEquyWv.EwluxWkzGM3L9LNERVzPfhF1RGxoAztnacTuy3OlQP0YDEwmh5vWPn70TQslcN8oT.u/"
+    groups: sudo
+
+- name: Copy ssh keys in container
+  connection: lxd
+  authorized_key:
+    user: "{{ ansible_ssh_user }}"
+    state: present
+    key: "{{ lxc_user_ssh_key }}"
+
+- name: Check authorized_keys file permission
+  connection: lxd
+  become: false
+  file:
+    path: "/home/{{ ansible_ssh_user }}/.ssh/authorized_keys"
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: 0600
+
+- name: Ensure ssh is started and enabled to start at boot.
+  connection: lxd
+  become: false
+  service: name=ssh state=started enabled=yes
+
+- name: Restore ansible_host for ssh connection
+  set_fact:
+    ansible_host: "{{ inventory_hostname }}"
+
+- name: Gather facts
+  setup:
