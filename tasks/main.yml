@@ -17,6 +17,7 @@
     key_file: "{{ lxc_client_key }}"
     url: "{{ lxc_lxd_url }}"
 #    url: "https://{{ hostvars[lxc_lxd_host]['address'] }}:{{ lxc_lxd_port }}"
+#    url: "https://{{ lxc_lxd_host }}:{{ lxc_lxd_port }}"
     source:
       type: image
       mode: pull
@@ -42,7 +43,11 @@
 - name: Install Python2 in container
   connection: lxd
   become: false
+<<<<<<< HEAD
   raw: apt update && apt install -qy python
+=======
+  raw: apt-get update && apt-get install -y python
+>>>>>>> e04e44c011e0db2efd6be6f1009c2b7f1b624a45
   when: python_check_is_installed.rc == 1
 
 - name: Install necessary packages
