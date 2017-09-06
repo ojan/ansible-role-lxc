@@ -19,6 +19,7 @@
     profiles: "{{ lxc_profiles }}"
     wait_for_ipv4_addresses: true
     timeout: 10
+  register: container_created
 
 - name: Set temporary ansible_host for lxd connection
   set_fact:
@@ -89,6 +90,14 @@
 - name: Restore ansible_host for ssh connection
   set_fact:
     ansible_host: "{{ inventory_hostname }}"
+
+- name: Remove the old SSH key in known_hosts file
+  connection: local
+  known_hosts:
+    name: "{{ inventory_hostname }}"
+    path: "{{ lookup('env','HOME') + '/.ssh/known_hosts' }}"
+    state: absent
+  when: container_created.changed
 
 - name: Gather facts
   setup:
