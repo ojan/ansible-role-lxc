@@ -1,7 +1,7 @@
 Ansible Role: LXC
 =========
 
-Creation of a LXC container through the LXD API with Ansible [lxd-module](docs.ansible.com/ansible/lxd_container_module.html). It also provision python, sudo, ssh and user ssh key to have a fully ready Ansible controlable container.
+Creation of a LXC container through the LXD API with Ansible [lxd-module](docs.ansible.com/ansible/lxd_container_module.html). It also provision `python, sudo, ssh` and user ssh key to have a fully ready Ansible controlable container.
 
 Requirements
 ------------
@@ -33,7 +33,7 @@ Available variables are listed below, along with default values (see `defaults/m
 - `lxc_profiles`: Profiles to use for the container. Must be created before used. Default to `['default']`
 - `lxc_container_distro`: The Linux image distribution to launch in the container. Default to `16.04/amd64`
 - `lxc_image_source`: The image source to use for downloading images. Default to `https://cloud-images.ubuntu.com/releases`
-- `lxc_lxd_host`: The LXD hostname where to boot the container. Must be listed in `lxc remote list` command. Default to `lxd-01`
+- `lxc_lxd_host`: The LXD hostname where to boot the container. Must be listed in `lxc remote list` command. Default is empty. **Must be set to play the role**.
 - `lxc_lxd_port`: The LXD port to contact. Default to `8443`
 - `lxc_client_key`: The lxc client key used to contact the LXD daemon. Default to `{{ lookup('env', 'HOME') }}/.config/lxc/client.key`
 - `lxc_client_cert`: The lxc client certificate used to contact the LXD daemon. Default to `{{ lookup('env', 'HOME') }}/.config/lxc/client.crt`
@@ -65,7 +65,7 @@ Then set as usual a playbook like this one:
       roles:
          - { role: ojan.lxc-node }
 
-Set `gather_facts` to `false` to avoid the setup module to run because you can't ssh connect in a non-existent container.
+Set `gather_facts` to `false` to avoid the setup module to run because **you can't ssh connect in a non-existent container**.
 
 License
 -------
