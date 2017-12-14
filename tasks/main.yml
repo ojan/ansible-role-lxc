@@ -19,6 +19,7 @@
     profiles: "{{ lxc_profiles }}"
     wait_for_ipv4_addresses: true
     timeout: 10
+  when: lxc_lxd_host is defined
   register: container_created
 
 - name: Set temporary ansible_host for lxd connection
